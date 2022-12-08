@@ -4,6 +4,8 @@ import { nanoid } from 'nanoid';
 import PropTypes from "prop-types";
 import { Label, Button } from "./PhonebookForm.styled";
 import styled from "styled-components";
+import { addContact } from "redux/contactsSlice";
+import { useDispatch } from "react-redux";
 
 const InputName = styled(Field)`
     border: 1px solid gray;
@@ -37,17 +39,14 @@ let schema = yup.object().shape({
     number: yup.number().required()
 });
 
-const PhonebookForm = ({onAddContact}) => {
-    // handleChange = e => {
-    //     const { name, value } = e.currentTarget;
-    //     this.setState({ [name]: value });
-    // }
+const PhonebookForm = () => {
+    const dispatch = useDispatch();
+    // const contacts = useSelector(getContacts);
 
-    const handleSubmit = (values, {resetForm}, ) => {
+    const handleSubmit = (values, {resetForm}) => {
         const contact = { id: nanoid(7), name: values.name, number: values.number };
-        console.log(contact)
-        onAddContact(contact);
-        console.log(values)
+        console.log(contact);
+        dispatch(addContact(contact));
         resetForm();
     }
 
@@ -86,36 +85,5 @@ PhonebookForm.propTypes = {
     name: PropTypes.string,
     number: PropTypes.string,
 }
-// начала на formik
-// const PhonebookForm = () => {
-//     const handleSubmit = (values, actions) => {
-//         console.log(values);
-//         console.log(actions);
-//         // actions.setValues({ name: event.currentTarget.value })
-        
-//         actions.resetForm();
-
-//     }
-//     return (
-//         <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-//             <Form>
-//                 <h2>Phonebook</h2>
-//                 <label htmlFor="name">
-//                     Name
-//                     <Field
-//                         type="text"
-//                         name="name"
-//                         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-//                         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-//                         required
-//                     />
-//                     <ErrorMessage name="name" />
-//                 </label>
-//                 <button type="submit">Add contact</button>
-//                 </Form>
-//             </Formik>
-//     )
-
-// };
 
 export default PhonebookForm;
